@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using Mapster;
 
 namespace newtools1024.ApiService.Data.Entities
 {

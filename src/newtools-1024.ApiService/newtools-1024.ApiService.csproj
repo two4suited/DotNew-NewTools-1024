@@ -18,23 +18,23 @@
     <PackageReference Include="Carter" Version="8.2.1" />
     <PackageReference Include="Mapster" Version="7.4.0" />
     <PackageReference Include="Mapster.DependencyInjection" Version="1.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.8.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="6.8.1" />
   </ItemGroup>
-  <Target Name="Mapster" BeforeTargets="BeforeBuild;BeforeRebuild" Condition="'$(EnableMapsterCodeGen)' == 'true' And '$(ONCE)' != 'TRUE'">
-    <PropertyGroup>
-      <MapsterGeneratedFiles>$(MapsterCodeGenDirectory)\*.g.cs</MapsterGeneratedFiles>
-    </PropertyGroup>
-    <ItemGroup>
-      <Compile Remove="$(MapsterGeneratedFiles)" />
-    </ItemGroup>
-    <RemoveDir Directories="$(MapsterCodeGenDirectory)"/>
-    <Exec Command="dotnet msbuild $(ProjectPath) -p:Configuration=$(Configuration)" EnvironmentVariables="ONCE=TRUE" />
-    <Exec Command="dotnet tool update Mapster.Tool --global" />
-    <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet mapster model -a &quot;$(TargetDir)$(ProjectName).dll&quot; -p" />
-    <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet mapster extension -a &quot;$(TargetDir)$(ProjectName).dll&quot; -p" />
-    <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet mapster mapper -a &quot;$(TargetDir)$(ProjectName).dll&quot; -p" />
-    <ItemGroup>
-      <Compile Include="$(MapsterGeneratedFiles)" />
-    </ItemGroup>    
+  <Target Name="Mapster">
+    <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet build" />
+    <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet tool restore" />
+    <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet mapster model -a &quot;$(TargetDir)$(ProjectName).dll&quot;" />
+    <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet mapster extension -a &quot;$(TargetDir)$(ProjectName).dll&quot;" />
+    <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet mapster mapper -a &quot;$(TargetDir)$(ProjectName).dll&quot;"/>
+    <!--        Force Mappers -->
+    <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet build"/>
     <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet mapster extension -a &quot;$(TargetDir)$(ProjectName).dll&quot;"/>
+  </Target>  
+  <ItemGroup>
+    <Generated Include="**\*.g.cs" />
+  </ItemGroup>
+  <Target Name="CleanGenerated">
+    <Delete Files="@(Generated)" />
   </Target>
 </Project>

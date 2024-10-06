@@ -11,3 +11,10 @@
 - [Mapster/Mapster.Tool](https://github.com/MapsterMapper/Mapster)
 - [Fluent Results](https://github.com/altmann/FluentResults)
 - [Carter](https://github.com/CarterCommunity/Carter)
+
+
+## Work Arounds
+
+### Get Auto Generated Mapper Code
+     dotnet msbuild -t:CleanGenerated && dotnet clean && dotnet msbuild -t:Mapster
+ 
