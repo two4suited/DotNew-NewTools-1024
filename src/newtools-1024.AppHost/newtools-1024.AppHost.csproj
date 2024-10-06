@@ -10,12 +10,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Sheridan.Aspire.Hosting\Sheridan.Aspire.Hosting.csproj" IsAspireProjectResource="false"/>
     <ProjectReference Include="..\newtools-1024.ApiService\newtools-1024.ApiService.csproj" />
+    <ProjectReference Include="..\newtools-1024.DBSeeder\newtools-1024.DBSeeder.csproj" />
     <ProjectReference Include="..\newtools-1024.Web\newtools-1024.Web.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting.AppHost" Version="8.2.1" />
+    <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="8.2.1" />
   </ItemGroup>
 
 </Project>

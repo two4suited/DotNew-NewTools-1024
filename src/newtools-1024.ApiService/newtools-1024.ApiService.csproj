@@ -10,4 +10,8 @@
     <ProjectReference Include="..\newtools-1024.ServiceDefaults\newtools-1024.ServiceDefaults.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.2.1" />
+  </ItemGroup>
+
 </Project>

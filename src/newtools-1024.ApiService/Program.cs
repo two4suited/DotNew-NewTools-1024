@@ -5,6 +5,7 @@ builder.AddServiceDefaults();
 
 // Add services to the container.
 builder.Services.AddProblemDetails();
+builder.AddNpgsqlDbContext<SampleDbContext>("postgresdb");
 
 var app = builder.Build();
 
