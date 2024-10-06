@@ -11,10 +11,10 @@ public class MapsterConfiguration : ICodeGenerationRegister
 {
     public void Register(CodeGenerationConfig config)
     {
-        config.AdaptTo("[name]Dto")
+        config.AdaptTo("[name]Dto",MapType.Map | MapType.MapToTarget | MapType.Projection)
             .ApplyDefaultRule();
            
-    /*
+    
         config.AdaptFrom("[name]Add", MapType.Map)
             .ApplyDefaultRule()
             .IgnoreNoModifyProperties();
@@ -29,8 +29,10 @@ public class MapsterConfiguration : ICodeGenerationRegister
             .IgnoreAttributes(typeof(KeyAttribute))
             .IgnoreNoModifyProperties()
             .IgnoreNullValues(true);
-      */  
-        config.GenerateMapper("[name]Mapper").ForType<Person>().ForType<Pet>();
+       
+        config.GenerateMapper("[name]Mapper")
+            .ForType<Person>()
+            .ForType<Pet>();
     }
 }
 
@@ -44,6 +46,7 @@ static class RegisterExtensions
             .ExcludeTypes(type => type.IsEnum)
             .AlterType(type => type.IsEnum || Nullable.GetUnderlyingType(type)?.IsEnum == true, typeof(string))
             .ShallowCopyForSameType(true)
+            .IgnoreNullValues(true)
             .ForType<Person>(cfg => cfg.Ignore(it => it.Pets));
     }
     
