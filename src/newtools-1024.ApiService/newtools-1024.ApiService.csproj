@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <RootNamespace>newtools1024.ApiService</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,6 +13,20 @@
 
   <ItemGroup>
     <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.2.1" />
+    <PackageReference Include="Carter" Version="8.2.1" />
+    <PackageReference Include="Mapster" Version="7.4.0" />
+    <PackageReference Include="Mapster.DependencyInjection" Version="1.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Generated Include="**\*.g.cs" />
   </ItemGroup>
 
+
+    <Target Name="Mapster" AfterTargets="AfterBuild">
+      <Delete Files="@(Generated)" />
+    <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet tool restore" />
+    <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet mapster model -a &quot;$(TargetDir)$(ProjectName).dll&quot;" />
+    <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet mapster extension -a &quot;$(TargetDir)$(ProjectName).dll&quot;" />
+    <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet mapster mapper -a &quot;$(TargetDir)$(ProjectName).dll&quot;" />
+  </Target>
 </Project>

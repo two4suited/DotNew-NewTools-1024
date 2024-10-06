@@ -1,5 +1,8 @@
 using Bogus;
 using Microsoft.EntityFrameworkCore;
+using newtools1024.ApiService.Data.Entities;
+using Person = newtools1024.ApiService.Data.Entities.Person;
+
 
 namespace newtools_1024.DBSeeder;
 

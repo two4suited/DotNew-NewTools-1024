@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using newtools1024.ApiService.Data.Entities;
+
 
 public class SampleDbContext : DbContext
 {

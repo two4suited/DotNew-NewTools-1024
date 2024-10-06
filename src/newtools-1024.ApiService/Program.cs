@@ -1,3 +1,6 @@
+using Mapster;
+using newtools1024.ApiService;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add service defaults & Aspire components.
@@ -6,6 +9,8 @@ builder.AddServiceDefaults();
 // Add services to the container.
 builder.Services.AddProblemDetails();
 builder.AddNpgsqlDbContext<SampleDbContext>("postgresdb");
+builder.Services.AddMapster();
+builder.Services.AddSingleton<ICodeGenerationRegister,MapsterConfiguration>();
 
 var app = builder.Build();
 
