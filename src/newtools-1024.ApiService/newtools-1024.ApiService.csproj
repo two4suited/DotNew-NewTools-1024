@@ -4,6 +4,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <EnableMapsterCodeGen>true</EnableMapsterCodeGen>
+    <MapsterCodeGenDirectory>Models</MapsterCodeGenDirectory>
     <RootNamespace>newtools1024.ApiService</RootNamespace>
   </PropertyGroup>
 
@@ -17,16 +19,22 @@
     <PackageReference Include="Mapster" Version="7.4.0" />
     <PackageReference Include="Mapster.DependencyInjection" Version="1.0.1" />
   </ItemGroup>
-  <ItemGroup>
-    <Generated Include="**\*.g.cs" />
-  </ItemGroup>
-
-
-    <Target Name="Mapster" AfterTargets="AfterBuild">
-      <Delete Files="@(Generated)" />
-    <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet tool restore" />
-    <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet mapster model -a &quot;$(TargetDir)$(ProjectName).dll&quot;" />
-    <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet mapster extension -a &quot;$(TargetDir)$(ProjectName).dll&quot;" />
-    <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet mapster mapper -a &quot;$(TargetDir)$(ProjectName).dll&quot;" />
+  <Target Name="Mapster" BeforeTargets="BeforeBuild;BeforeRebuild" Condition="'$(EnableMapsterCodeGen)' == 'true' And '$(ONCE)' != 'TRUE'">
+    <PropertyGroup>
+      <MapsterGeneratedFiles>$(MapsterCodeGenDirectory)\*.g.cs</MapsterGeneratedFiles>
+    </PropertyGroup>
+    <ItemGroup>
+      <Compile Remove="$(MapsterGeneratedFiles)" />
+    </ItemGroup>
+    <RemoveDir Directories="$(MapsterCodeGenDirectory)"/>
+    <Exec Command="dotnet msbuild $(ProjectPath) -p:Configuration=$(Configuration)"
+          EnvironmentVariables="ONCE=TRUE" />
+    <Exec Command="dotnet tool update Mapster.Tool --global" />
+    <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet mapster model -a &quot;$(TargetDir)$(ProjectName).dll&quot; -p" />
+    <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet mapster extension -a &quot;$(TargetDir)$(ProjectName).dll&quot; -p" />
+    <Exec WorkingDirectory="$(ProjectDir)" Command="dotnet mapster mapper -a &quot;$(TargetDir)$(ProjectName).dll&quot; -p" />
+    <ItemGroup>
+      <Compile Include="$(MapsterGeneratedFiles)" />
+    </ItemGroup>
   </Target>
 </Project>
