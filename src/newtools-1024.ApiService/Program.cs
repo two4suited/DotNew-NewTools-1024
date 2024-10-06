@@ -1,4 +1,5 @@
 using Microsoft.OpenApi.Models;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,8 +22,12 @@ app.UseExceptionHandler();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwagger(options =>
+    {
+        options.RouteTemplate = "openapi/{documentName}.json";
+    });
+    app.MapScalarApiReference(options =>
+        options.EndpointPathPrefix = "/api-docs/{documentName}");
 }
 
 app.UseReDoc(c =>
